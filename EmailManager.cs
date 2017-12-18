@@ -6,8 +6,8 @@ namespace Laba_8
     {
         private readonly SmtpClient _smtpClient;
         //Fill with your data
-        private const string Sender = "dmitry.apanasik@gmail.com";
-        private const string Password = "Dima021297";
+        private const string Sender = "";
+        private const string Password = "";
 
         private const string Host = "smtp.gmail.com";
         private const int Port = 587;
